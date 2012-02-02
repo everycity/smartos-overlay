@@ -132,6 +132,12 @@ if smf_is_globalzone; then
 
     # Setup admin NIC
     if [[ -n ${SYSINFO_NIC_admin} ]]; then
+	if [[ -n ${SYSINFO_NIC_admin_master} ]] && [[ -n ${SYSINFO_NIC_admin_slave} ]]; then
+            dladm create-aggr -t -P L2 -L off -l ${SYSINFO_NIC_admin_master} ${SYSINFO_NIC_admin}
+            # plumb the slave interface so its actual link state can be accessed using kstats
+            ifconfig ${SYSINFO_NIC_admin_slave} plumb
+        fi
+
         ifconfig ${SYSINFO_NIC_admin} plumb
         if [[ ${headnode} == "true" ]]; then
             if [[ -n ${CONFIG_admin_ip} ]] && [[ -n ${CONFIG_admin_netmask} ]];
