@@ -349,6 +349,13 @@ setup_datasets()
     printf "%4s\n" "done" 
   fi
 
+  if ! echo $datasets | grep ${ECDS} > /dev/null; then
+    printf "%-56s" "Creating ec dataset... " 
+    zfs create -o mountpoint=legacy ${ECDS} || \
+      fatal "failed to create the ec dataset"
+    printf "%4s\n" "done" 
+  fi
+
   if ! echo $datasets | grep ${OPTDS} > /dev/null; then
     printf "%-56s" "Creating opt dataset... " 
     zfs create -o mountpoint=legacy ${OPTDS} || \
@@ -454,6 +461,7 @@ create_zpools()
 
   export CONFDS=${SYS_ZPOOL}/config
   export COREDS=${SYS_ZPOOL}/cores
+  export ECDS=${SYS_ZPOOL}/ec
   export OPTDS=${SYS_ZPOOL}/opt
   export VARDS=${SYS_ZPOOL}/var
   export USBKEYDS=${SYS_ZPOOL}/usbkey
@@ -538,6 +546,10 @@ fi
 #
 while [ /usr/bin/true ]; do
 
+	printheader "Hostname"
+	promptval "Enter hostname"
+	hostname="$val"
+
 	printheader "Networking" 
 	
 	promptnic "'admin'"
@@ -621,6 +633,8 @@ echo >>$tmp_config
 platform=$(smbios -t1 | nawk '{if ($1 == "Product:") print $2}')
 [ "$platform" == "VMware" ] && echo "coal=true" >>$tmp_config
 
+echo "hostname=$hostname" >>$tmp_config
+echo >>$tmp_config
 
 echo "# admin_nic is the nic admin_ip will be connected to for headnode zones."\
     >>$tmp_config
