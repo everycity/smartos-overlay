@@ -16,6 +16,7 @@ mail_to="root@localhost"
 ntp_hosts="0.uk.pool.ntp.org"
 dns_resolver1="95.131.250.255"
 dns_resolver2="89.16.189.200"
+dns_domain="everycity.co.uk"
 
 # Globals
 declare -a states
