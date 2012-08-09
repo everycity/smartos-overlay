@@ -275,6 +275,11 @@ promptpool()
     echo ""
     bad=""
     read val
+    if [[ $val == "" ]]; then
+      echo "At least one disk must be specified"
+      echo ""
+      continue
+    fi
     for disk in $(echo $val | tr " " "\n"); do
       if [[ -z $disk ]]; then continue; fi;
       echo $disks | grep $disk 1>&2 > /dev/null
@@ -686,6 +691,7 @@ sed -e "s|^root:[^\:]*:|root:${root_shadow}:|" /etc/shadow > /usbkey/shadow \
       && chmod 400 /usbkey/shadow
 
 cp -rp /etc/ssh /usbkey/ssh
+cp /usr/img/etc/sources.list.sample /var/db/imgadm/sources.list
 
 reboot
 
