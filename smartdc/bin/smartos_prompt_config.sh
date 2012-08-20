@@ -587,8 +587,6 @@ while [ /usr/bin/true ]; do
     dns_resolver1="$val"
     promptval "Enter the Secondary DNS server IP" "$dns_resolver2"
     dns_resolver2="$val"
-    promptval "Enter the domain name" "$domainname"
-    domainname="$val"
     promptval "Default DNS search domain" "$dns_domain"
     dns_domain="$val"
   fi	
@@ -615,7 +613,6 @@ while [ /usr/bin/true ]; do
     echo "DNS servers: $dns_resolver1,$dns_resolver2"
     echo "Default DNS search domain: $dns_domain"
     echo "NTP server: $ntp_hosts"
-	  echo "Domain name: $domainname"
     echo
   fi
 	promptval "Is this correct?" "y"
