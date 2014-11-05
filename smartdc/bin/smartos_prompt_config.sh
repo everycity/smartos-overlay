@@ -1,4 +1,13 @@
 #!/usr/bin/bash
+#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+
+#
+# Copyright (c) 2014, Joyent, Inc.
+#
 
 # XXX - TODO
 # - if $ntp_hosts == "local", configure ntp for no external time source
@@ -408,7 +417,7 @@ create_zpool()
     pool=zones
 
     # If the pool already exists, don't create it again.
-    if /usr/sbin/zpool list -H -o name $pool; then
+    if /usr/sbin/zpool list -H -o name $pool >/dev/null 2>&1; then
         return 0
     fi
 
@@ -569,6 +578,9 @@ while [ /usr/bin/true ]; do
     promptnet "netmask" "$admin_netmask"
     admin_netmask="$val"
 
+    ip_netmask_to_network $admin_ip $admin_netmask
+    admin_network="$net_a.$net_b.$net_c.$net_d"
+
     printheader "Networking - Continued"
     message=""
     
@@ -619,7 +631,6 @@ while [ /usr/bin/true ]; do
 	[ "$val" == "y" ] && break
 	clear
 done
-admin_network="$net_a.$net_b.$net_c.$net_d"
 
 #
 # Generate config file
