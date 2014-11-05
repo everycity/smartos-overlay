@@ -451,8 +451,8 @@ create_zpool()
         fatal "failed to create pool ${pool}"
     zfs set atime=off ${pool} || \
         fatal "failed to set atime=off for pool ${pool}"
-    zfs set compression=on ${pool} || \
-        fatal "failed to set atime=off for pool ${pool}"
+    zfs set compression=lz4 ${pool} || \
+        fatal "failed to set compression=lz4 for pool ${pool}"
 
     printf "%4s\n" "done" 
 }
